@@ -10,5 +10,5 @@ public interface PasswordService {
   List<Password> getAllPasswords();
   void deletePassword(Long id);
   Password savePassword(Password password, Long userId);
-  Password updatePassword(String password, Long id);
+  Password updatePassword(Password password, Long passwordId);
 }
