@@ -11,5 +11,5 @@ import jakarta.transaction.Transactional;
 public interface PasswordRepository extends CrudRepository<Password, Long> {
     List<Password> findAllByUserId(Long userId);
     @Transactional
-    void deletebyUserId(Long userId);
+    void deleteByUserId(Long userId);
 }

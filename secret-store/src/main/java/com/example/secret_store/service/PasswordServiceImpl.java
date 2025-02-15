@@ -49,9 +49,10 @@ public class PasswordServiceImpl implements PasswordService {
   }
 
   @Override
-  public Password updatePassword(String password, Long id) {
+  public Password updatePassword(final Password password, final Long id) {
     Password updatedPassword = getPassword(id);
-    updatedPassword.setPasswords(password);
+    updatedPassword.setPasswords(password.getPasswords());
+    updatedPassword.setPasswordName(password.getPasswordName());
     return passwordRepository.save(updatedPassword);
   }
 

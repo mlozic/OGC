@@ -5,9 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.example.secret_store.entity.Password;
 import com.example.secret_store.entity.User;
-import com.example.secret_store.exception.PasswordNotFoundException;
 import com.example.secret_store.exception.UserNotFoundException;
 import com.example.secret_store.repository.UserRepository;
 
@@ -41,9 +39,11 @@ public class UserServiceImpl implements UserService {
     return userRepository.save(user);
   }
 
-    @Override
-  public User updateUser(User user) {
-    User updatedUser = getUser(user.getId());
+  @Override
+  public User updateUser(User user, final Long id) {
+    User updatedUser = getUser(id);
+    updatedUser.setRoleType(user.getRoleType());
+    updatedUser.setUsername(user.getUsername());
     return userRepository.save(updatedUser);
   }
   
