@@ -3,11 +3,12 @@ package com.example.secret_store.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.secret_store.entity.Password;
 import com.example.secret_store.entity.User;
-import com.example.secret_store.exception.PasswordNotFoundException;
+import com.example.secret_store.exception.EntityNotFoundException;
 import com.example.secret_store.repository.UserRepository;
 import com.example.secret_store.repository.PasswordRepository;
 
@@ -17,8 +18,9 @@ import lombok.AllArgsConstructor;
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
-  PasswordRepository passwordRepository;
-  UserRepository userRepository;
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
+  private PasswordRepository passwordRepository;
+  private UserRepository userRepository;
 
   @Override
   public Password getPassword(final Long id) {
@@ -40,6 +42,7 @@ public class PasswordServiceImpl implements PasswordService {
   public Password savePassword(Password password, final Long userId) {
     User user = UserServiceImpl.handleUserOptional(userRepository.findById(userId), userId);
     password.setUser(user);
+    bCryptPasswordEncoder.encode(password.getPasswords());
     return passwordRepository.save(password);
   }
 
@@ -59,6 +62,6 @@ public class PasswordServiceImpl implements PasswordService {
   static Password handlePasswordOptional(Optional<Password> password, final Long id){
     if (password.isPresent()) {
       return password.get();
-    } else throw new PasswordNotFoundException(id);
+    } else throw new EntityNotFoundException(id, Password.class);
   }
 }

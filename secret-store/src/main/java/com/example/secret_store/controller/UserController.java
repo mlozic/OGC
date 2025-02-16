@@ -26,8 +26,8 @@ public class UserController {
   UserService userService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUser(@PathVariable final Long id){
-      return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
+  public ResponseEntity<String> getUser(@PathVariable final Long id){
+    return new ResponseEntity<>(userService.getUser(id).getUsername(), HttpStatus.OK);
   }
 
   @GetMapping("/all")
@@ -35,9 +35,10 @@ public class UserController {
       return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
   }
 
-  @PostMapping
-  public ResponseEntity<User> saveUser(@RequestBody User user){
-    return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+  @PostMapping("/register")
+    public ResponseEntity<HttpStatus> createUser(@RequestBody User user){
+      userService.saveUser(user);
+      return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @DeleteMapping("/{id}")
