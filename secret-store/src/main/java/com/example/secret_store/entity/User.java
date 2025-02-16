@@ -35,6 +35,10 @@ public class User {
     private String username;
 
     @NonNull
+    @Column(name = "app_password")
+    private String appPassword;
+
+    @NonNull
     @Column(name = "role_type", nullable = false)
     private RoleType roleType;
 
