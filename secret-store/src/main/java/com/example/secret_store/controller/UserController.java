@@ -26,29 +26,29 @@ public class UserController {
   UserService userService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<String> getUser(@PathVariable final Long id){
+  public ResponseEntity<String> getUser(@PathVariable final Long id) {
     return new ResponseEntity<>(userService.getUser(id).getUsername(), HttpStatus.OK);
   }
 
   @GetMapping("/all")
-  public ResponseEntity<List<User>> getUsers(){
-      return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+  public ResponseEntity<List<String>> getUsers() {
+    return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
   }
 
   @PostMapping("/register")
-    public ResponseEntity<HttpStatus> createUser(@RequestBody User user){
-      userService.saveUser(user);
-      return new ResponseEntity<>(HttpStatus.CREATED);
+  public ResponseEntity<HttpStatus> createUser(@RequestBody User user) {
+    userService.saveUser(user);
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<HttpStatus> deleteUser(@PathVariable final Long id){
+  public ResponseEntity<HttpStatus> deleteUser(@PathVariable final Long id) {
     userService.deleteUser(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable final Long id){
+  public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable final Long id) {
     return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
   }
 }

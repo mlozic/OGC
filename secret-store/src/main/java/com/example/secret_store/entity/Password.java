@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,7 +34,11 @@ public class Password {
     @Column(name = "password_name", nullable = false)
     private String passwordName;
 
+    @NonNull
+    @Column(name = "user_role", nullable = false)
+    private String userRole;
+
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName ="id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }
