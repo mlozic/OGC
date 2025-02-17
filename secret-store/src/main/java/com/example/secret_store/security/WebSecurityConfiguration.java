@@ -14,6 +14,7 @@ import com.example.secret_store.security.filter.AuthenticationFilter;
 import com.example.secret_store.security.filter.ExceptionHandlerFilter;
 import com.example.secret_store.security.filter.JWTAuthorizationFilter;
 import com.example.secret_store.security.manager.CustomAuthenticationManager;
+import com.example.secret_store.service.UserService;
 
 import lombok.AllArgsConstructor;
 
@@ -22,21 +23,24 @@ import lombok.AllArgsConstructor;
 public class WebSecurityConfiguration {
 
     private CustomAuthenticationManager customAuthenticationManager;
+    private UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager, userService);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((auth) -> auth
-                .requestMatchers(HttpMethod.POST, Constants.REGISTER_PATH).permitAll()
-                .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.POST, Constants.REGISTER_PATH).permitAll()
+                        .requestMatchers("/user/**").authenticated()
+                        .requestMatchers("/passwords/**").authenticated()
+                        .anyRequest().authenticated())
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
                 .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
                 .httpBasic(withDefaults()).sessionManagement(sessionManagementCustomizer -> sessionManagementCustomizer
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

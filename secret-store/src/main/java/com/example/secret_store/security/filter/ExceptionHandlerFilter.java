@@ -23,14 +23,13 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.getWriter().write("Username does not exist");
             response.getWriter().flush();
-        }catch(JWTVerificationException e){
+        } catch (JWTVerificationException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("Invalid JWT token");
             response.getWriter().flush();
-        } 
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("Bad request");
+            response.getWriter().write(e.getMessage());
             response.getWriter().flush();
         }
     }
