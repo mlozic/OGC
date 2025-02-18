@@ -8,7 +8,7 @@ docker compose up
 
 Open secret-store project
 
-mvn clean spring-boot:run
+mvn clean spring-boot:run || mvn clean spring-boot:run -Pdebug        
 
 mvn -version 3.9.9
 
